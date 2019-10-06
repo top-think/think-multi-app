@@ -18,7 +18,7 @@ use think\Request;
 use think\Response;
 
 /**
- * Session初始化
+ * 多应用模式支持
  */
 class MultiApp
 {
@@ -26,9 +26,23 @@ class MultiApp
     /** @var App */
     protected $app;
 
+    /**
+     * 应用名称
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * 应用路径
+     * @var string
+     */
+    protected $path;
+
     public function __construct(App $app)
     {
-        $this->app = $app;
+        $this->app  = $app;
+        $this->name = $this->app->http->getName();
+        $this->path = $this->app->http->getPath();
     }
 
     /**
@@ -61,7 +75,7 @@ class MultiApp
             return $this->app->getAppPath() . 'route' . DIRECTORY_SEPARATOR;
         }
 
-        return $this->app->getRootPath() . 'route' . DIRECTORY_SEPARATOR . $this->app->getName() . DIRECTORY_SEPARATOR;
+        return $this->app->getRootPath() . 'route' . DIRECTORY_SEPARATOR . $this->name . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -73,9 +87,9 @@ class MultiApp
 
         if ($autoMulti) {
             // 自动多应用识别
-            $this->app->setBindDomain(false);
-            $appName = null;
-            $this->app->name('');
+            $this->app->http->setBindDomain(false);
+            $appName    = null;
+            $this->name = '';
 
             $bind = $this->app->config->get('app.domain_bind', []);
 
@@ -86,17 +100,17 @@ class MultiApp
 
                 if (isset($bind[$domain])) {
                     $appName = $bind[$domain];
-                    $this->app->setBindDomain();
+                    $this->app->http->setBindDomain();
                 } elseif (isset($bind[$subDomain])) {
                     $appName = $bind[$subDomain];
-                    $this->app->setBindDomain();
+                    $this->app->http->setBindDomain();
                 } elseif (isset($bind['*'])) {
                     $appName = $bind['*'];
-                    $this->app->setBindDomain();
+                    $this->app->http->setBindDomain();
                 }
             }
 
-            if (!$this->app->isBindDomain()) {
+            if (!$this->app->http->isBindDomain()) {
                 $path = $this->app->request->pathinfo();
                 $map  = $this->app->config->get('app.app_map', []);
                 $deny = $this->app->config->get('app.deny_app_list', []);
@@ -123,7 +137,7 @@ class MultiApp
                 }
             }
         } else {
-            $appName = $this->getScriptName();
+            $appName = $this->name ?: $this->getScriptName();
         }
 
         $this->setApp($appName ?: $this->app->config->get('app.default_app', 'index'));
@@ -152,12 +166,12 @@ class MultiApp
      */
     protected function setApp(string $appName): void
     {
-        $this->app->name($appName);
+        $this->name = $appName;
         $this->app->request->setApp($appName);
-        $this->app->setAppPath($this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR);
+        $this->app->setAppPath($this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR);
         $this->app->setRuntimePath($this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR);
 
-        $this->app->setRoutePath($this->getRoutePath());
+        $this->app->http->setRoutePath($this->getRoutePath());
 
         // 设置应用命名空间
         $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: 'app\\' . $appName);
