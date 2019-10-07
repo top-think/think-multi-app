@@ -17,5 +17,8 @@ class Service extends BaseService
     public function register()
     {
         $this->app->middleware->unshift(MultiApp::class);
+        $this->app->bind([
+            'think\route\Url' => Url::class,
+        ]);
     }
 }
