@@ -138,7 +138,7 @@ class Url extends UrlBuild
                 $suffix = $match[2];
             }
 
-            if (!$this->app->http->isBindDomain()) {
+            if (!$this->app->http->isBind()) {
                 $url = $this->app->http->getName() . '/' . $url;
             }
         } elseif (!empty($rule) && isset($name)) {

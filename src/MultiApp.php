@@ -87,7 +87,7 @@ class MultiApp
 
         if ('index' == $scriptName) {
             // 自动多应用识别
-            $this->app->http->setBindDomain(false);
+            $this->app->http->setBind(false);
             $appName    = null;
             $this->name = '';
 
@@ -100,17 +100,17 @@ class MultiApp
 
                 if (isset($bind[$domain])) {
                     $appName = $bind[$domain];
-                    $this->app->http->setBindDomain();
+                    $this->app->http->setBind();
                 } elseif (isset($bind[$subDomain])) {
                     $appName = $bind[$subDomain];
-                    $this->app->http->setBindDomain();
+                    $this->app->http->setBind();
                 } elseif (isset($bind['*'])) {
                     $appName = $bind['*'];
-                    $this->app->http->setBindDomain();
+                    $this->app->http->setBind();
                 }
             }
 
-            if (!$this->app->http->isBindDomain()) {
+            if (!$this->app->http->isBind()) {
                 $path = $this->app->request->pathinfo();
                 $map  = $this->app->config->get('app.app_map', []);
                 $deny = $this->app->config->get('app.deny_app_list', []);
@@ -138,6 +138,7 @@ class MultiApp
             }
         } else {
             $appName = $this->name ?: $this->getScriptName();
+            $this->app->http->setBind();
         }
 
         $this->setApp($appName ?: $this->app->config->get('app.default_app', 'index'));
