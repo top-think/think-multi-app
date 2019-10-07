@@ -167,7 +167,7 @@ class MultiApp
     protected function setApp(string $appName): void
     {
         $this->name = $appName;
-        $this->app->request->setApp($appName);
+
         $this->app->setAppPath($this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR);
         $this->app->setRuntimePath($this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR);
 
