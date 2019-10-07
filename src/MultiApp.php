@@ -83,9 +83,9 @@ class MultiApp
      */
     protected function parseMultiApp(): void
     {
-        $autoMulti = $this->app->config->get('app.auto_multi_app', false);
+        $scriptName = $this->getScriptName();
 
-        if ($autoMulti) {
+        if ('index' == $scriptName) {
             // 自动多应用识别
             $this->app->http->setBindDomain(false);
             $appName    = null;
