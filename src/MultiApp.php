@@ -128,7 +128,9 @@ class MultiApp
                 } elseif ($name && isset($map['*'])) {
                     $appName = $map['*'];
                 } else {
-                    $appName = $name;
+                    if (is_dir($this->app->getRootPath() . $name)) {
+                        $appName = $name;
+                    }
                 }
 
                 if ($name) {
