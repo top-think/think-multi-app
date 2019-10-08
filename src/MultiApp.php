@@ -85,7 +85,10 @@ class MultiApp
     {
         $scriptName = $this->getScriptName();
 
-        if ('index' == $scriptName) {
+        if ($this->name || 'index' != $scriptName) {
+            $appName = $this->name ?: $scriptName;
+            $this->app->http->setBind();
+        } else {
             // 自动多应用识别
             $this->app->http->setBind(false);
             $appName    = null;
@@ -136,9 +139,6 @@ class MultiApp
                     $this->app->request->setPathinfo(strpos($path, '/') ? ltrim(strstr($path, '/'), '/') : '');
                 }
             }
-        } else {
-            $appName = $this->name ?: $this->getScriptName();
-            $this->app->http->setBind();
         }
 
         $this->setApp($appName ?: $this->app->config->get('app.default_app', 'index'));
