@@ -181,7 +181,7 @@ class MultiApp
             $this->app->http->setRoutePath($this->getRoutePath());
 
             //加载应用
-            $this->loadApp($appName);
+            $this->loadApp($appName, $appPath);
         }
     }
 
@@ -190,7 +190,7 @@ class MultiApp
      * @param string $appName 应用名
      * @return void
      */
-    protected function loadApp(string $appName): void
+    protected function loadApp(string $appName, string $appPath): void
     {
         if (is_file($appPath . 'common.php')) {
             include_once $appPath . 'common.php';
