@@ -55,7 +55,9 @@ class MultiApp
     public function handle($request, Closure $next)
     {
         // 多应用解析
-        $this->parseMultiApp();
+        if (!$this->parseMultiApp()) {
+            return $next($request);
+        }
 
         return $this->app->middleware->pipeline('app')
             ->send($request)
@@ -80,8 +82,9 @@ class MultiApp
 
     /**
      * 解析多应用
+     * @return bool
      */
-    protected function parseMultiApp(): void
+    protected function parseMultiApp(): bool
     {
         $scriptName = $this->getScriptName();
 
@@ -132,6 +135,10 @@ class MultiApp
                     $appName = $map['*'];
                 } else {
                     $appName = $name;
+                    $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
+                    if (!is_dir($appPath)) {
+                        return false;
+                    }
                 }
 
                 if ($name) {
@@ -142,6 +149,7 @@ class MultiApp
         }
 
         $this->setApp($appName ?: $this->app->config->get('app.default_app', 'index'));
+        return true;
     }
 
     /**
