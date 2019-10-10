@@ -137,7 +137,13 @@ class MultiApp
                     $appName = $name;
                     $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
                     if (!is_dir($appPath)) {
-                        return false;
+                        $express = $this->app->config->get('app.app_express', false);
+                        if ($express) {
+                            $this->setApp($this->app->config->get('app.default_app', 'index'));
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 }
 
