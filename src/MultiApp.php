@@ -98,6 +98,7 @@ class MultiApp
             $this->name = '';
 
             $bind = $this->app->config->get('app.domain_bind', []);
+            $map  = $this->app->config->get('app.app_map', []);
 
             if (!empty($bind)) {
                 // 获取当前子域名
@@ -108,7 +109,7 @@ class MultiApp
                     $appName = $bind[$domain];
                     $this->app->http->setBind();
                 } elseif (isset($bind[$subDomain])) {
-                    $appName = $bind[$subDomain];
+                    $appName = $map[$bind[$subDomain]] ?? $bind[$subDomain];
                     $this->app->http->setBind();
                 } elseif (isset($bind['*'])) {
                     $appName = $bind['*'];
@@ -118,7 +119,6 @@ class MultiApp
 
             if (!$this->app->http->isBind()) {
                 $path = $this->app->request->pathinfo();
-                $map  = $this->app->config->get('app.app_map', []);
                 $deny = $this->app->config->get('app.deny_app_list', []);
                 $name = current(explode('/', $path));
 
