@@ -135,11 +135,15 @@ class MultiApp
                     $appName = $map['*'];
                 } else {
                     $appName = $name;
+                    $defaultAppName = $this->app->config->get('app.default_app', 'index');
+                    if("" === $appName){
+                        $appName =  $defaultAppName;
+                    }
                     $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
                     if (!is_dir($appPath)) {
                         $express = $this->app->config->get('app.app_express', false);
                         if ($express) {
-                            $this->setApp($this->app->config->get('app.default_app', 'index'));
+                            $this->setApp($defaultAppName);
                             return true;
                         } else {
                             return false;
