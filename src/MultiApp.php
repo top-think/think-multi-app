@@ -135,8 +135,9 @@ class MultiApp
                 } elseif ($name && isset($map['*'])) {
                     $appName = $map['*'];
                 } else {
-                    $appName = $name;
-                    $appPath = $this->path ?: $this->app->getBasePath() . ($appName ? $appName . DIRECTORY_SEPARATOR : '');
+                    $appName = $name ?: $defaultApp;
+                    $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
+
                     if (!is_dir($appPath)) {
                         $express = $this->app->config->get('app.app_express', false);
                         if ($express) {
