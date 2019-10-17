@@ -180,7 +180,7 @@ class Url extends UrlBuild
             $file = str_replace('\\', '/', dirname($file));
         }
 
-        $url = rtrim($file, '/') . '/' . $url;
+        $url = rtrim($file, '/') . '/' . ltrim($url, '/');
 
         // URL后缀
         if ('/' == substr($url, -1) || '' == $url) {
