@@ -180,7 +180,7 @@ class Url extends UrlBuild
             $file = str_replace('\\', '/', dirname($file));
         }
 
-        $url = rtrim($file, '/') . '/' . $url;
+        $url = rtrim($file, '/') . '/' . ltrim($url, '/');
 
         // URL后缀
         if ('/' == substr($url, -1) || '' == $url) {
@@ -200,8 +200,9 @@ class Url extends UrlBuild
                 $url .= $suffix . '?' . $vars . $anchor;
             } else {
                 foreach ($vars as $var => $val) {
+                    $val = (string) $val;
                     if ('' !== $val) {
-                        $url .= $depr . $var . $depr . urlencode((string) $val);
+                        $url .= $depr . $var . $depr . urlencode($val);
                     }
                 }
 
