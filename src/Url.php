@@ -200,8 +200,9 @@ class Url extends UrlBuild
                 $url .= $suffix . '?' . $vars . $anchor;
             } else {
                 foreach ($vars as $var => $val) {
+                    $val = (string) $val;
                     if ('' !== $val) {
-                        $url .= $depr . $var . $depr . urlencode((string) $val);
+                        $url .= $depr . $var . $depr . urlencode($val);
                     }
                 }
 
