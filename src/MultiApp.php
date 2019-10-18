@@ -87,7 +87,7 @@ class MultiApp
     protected function parseMultiApp(): bool
     {
         $scriptName = $this->getScriptName();
-        $defaultApp = $this->app->config->get('app.default_app', 'index');
+        $defaultApp = $this->app->config->get('app.default_app') ?: 'index';
 
         if ($this->name || 'index' != $scriptName) {
             $appName = $this->name ?: $scriptName;
