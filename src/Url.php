@@ -42,6 +42,8 @@ class Url extends UrlBuild
         } elseif (0 === strpos($url, '@')) {
             // 解析到控制器
             $url = substr($url, 1);
+        } elseif ('' === $url) {
+            $url = $this->app->http->getName() . '/' . $request->controller() . '/' . $request->action();
         } else {
             // 解析到 应用/控制器/操作
             $controller = $request->controller();
