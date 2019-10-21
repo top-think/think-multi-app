@@ -30,7 +30,7 @@ class Build extends Command
     protected function configure()
     {
         $this->setName('build')
-            ->addArgument('app', Argument::REQUIRED, 'app name .')
+            ->addArgument('app', Argument::OPTIONAL, 'app name .')
             ->setDescription('Build App Dirs');
     }
 
