@@ -136,7 +136,7 @@ class Build extends Command
         $filename = $this->basePath . ($app ? $app . DIRECTORY_SEPARATOR : '') . 'controller' . DIRECTORY_SEPARATOR . 'Index' . $suffix . '.php';
 
         if (!is_file($filename)) {
-            $content = file_get_contents(__FILE__ . 'stubs' . DIRECTORY_SEPARATOR . 'controller.stub');
+            $content = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'stubs' . DIRECTORY_SEPARATOR . 'controller.stub');
             $content = str_replace(['{%name%}', '{%app%}', '{%layer%}', '{%suffix%}'], [$app, $namespace, 'controller', $suffix], $content);
             $this->checkDirBuild(dirname($filename));
 
