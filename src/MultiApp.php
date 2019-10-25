@@ -14,6 +14,7 @@ namespace think\app;
 
 use Closure;
 use think\App;
+use think\exception\HttpException;
 use think\Request;
 use think\Response;
 
