@@ -34,6 +34,12 @@ class MultiApp
     protected $name;
 
     /**
+     * 应用名称
+     * @var string
+     */
+    protected $appName;
+
+    /**
      * 应用路径
      * @var string
      */
@@ -47,7 +53,7 @@ class MultiApp
     }
 
     /**
-     * Session初始化
+     * 多应用解析
      * @access public
      * @param Request $request
      * @param Closure $next
@@ -55,7 +61,6 @@ class MultiApp
      */
     public function handle($request, Closure $next)
     {
-        // 多应用解析
         if (!$this->parseMultiApp()) {
             return $next($request);
         }
@@ -78,7 +83,7 @@ class MultiApp
             return $this->app->getAppPath() . 'route' . DIRECTORY_SEPARATOR;
         }
 
-        return $this->app->getRootPath() . 'route' . DIRECTORY_SEPARATOR . $this->name . DIRECTORY_SEPARATOR;
+        return $this->app->getRootPath() . 'route' . DIRECTORY_SEPARATOR . $this->appName . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -90,14 +95,14 @@ class MultiApp
         $scriptName = $this->getScriptName();
         $defaultApp = $this->app->config->get('app.default_app') ?: 'index';
 
-        if ($this->name || 'index' != $scriptName) {
+        if ($this->name || ($scriptName && !in_array($scriptName, ['index', 'think']))) {
             $appName = $this->name ?: $scriptName;
             $this->app->http->setBind();
         } else {
             // 自动多应用识别
             $this->app->http->setBind(false);
-            $appName    = null;
-            $this->name = '';
+            $appName       = null;
+            $this->appName = '';
 
             $bind = $this->app->config->get('app.domain_bind', []);
 
@@ -184,7 +189,7 @@ class MultiApp
      */
     protected function setApp(string $appName): void
     {
-        $this->name = $appName;
+        $this->appName = $appName;
         $this->app->http->name($appName);
 
         $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
