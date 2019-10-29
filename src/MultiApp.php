@@ -95,7 +95,7 @@ class MultiApp
         $scriptName = $this->getScriptName();
         $defaultApp = $this->app->config->get('app.default_app') ?: 'index';
 
-        if ($this->name || ($scriptName && !in_array($scriptName, ['index', 'think']))) {
+        if ($this->name || ($scriptName && !in_array($scriptName, ['index', 'router', 'think']))) {
             $appName = $this->name ?: $scriptName;
             $this->app->http->setBind();
         } else {
@@ -128,6 +128,10 @@ class MultiApp
                 $map  = $this->app->config->get('app.app_map', []);
                 $deny = $this->app->config->get('app.deny_app_list', []);
                 $name = current(explode('/', $path));
+
+                if (strpos($name, '.')) {
+                    $name = strstr($name, '.', true);
+                }
 
                 if (isset($map[$name])) {
                     if ($map[$name] instanceof Closure) {
