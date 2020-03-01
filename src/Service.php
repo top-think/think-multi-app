@@ -10,14 +10,13 @@
 // +----------------------------------------------------------------------
 namespace think\app;
 
-use think\facade\Event;
 use think\Service as BaseService;
 
 class Service extends BaseService
 {
-    public function register()
+    public function boot()
     {
-        Event::listen('HttpRun', function () {
+        $this->app->event->listen('HttpRun', function () {
             $this->app->middleware->add(MultiApp::class);
         });
 
