@@ -100,7 +100,8 @@ class MultiApp
             $appName       = null;
             $this->appName = '';
 
-            $bind = $this->app->config->get('app.domain_bind', []);
+            $bind   = $this->app->config->get('app.domain_bind', []);
+            $except = $this->app->config->get('app.pan_domain_except', []);
 
             if (!empty($bind)) {
                 // 获取当前子域名
@@ -113,7 +114,7 @@ class MultiApp
                 } elseif (isset($bind[$subDomain])) {
                     $appName = $bind[$subDomain];
                     $this->app->http->setBind();
-                } elseif (isset($bind['*'])) {
+                } elseif (isset($bind['*']) && !in_array($subDomain, $except)) {
                     $appName = $bind['*'];
                     $this->app->http->setBind();
                 }
