@@ -196,7 +196,7 @@ class MultiApp
 
         $this->app->setAppPath($appPath);
         // 设置应用命名空间
-        $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: 'app\\' . $appName);
+        $this->app->setNamespace(($this->app->config->get('app.app_namespace') ?: 'app') . '\\' . $appName);
 
         if (is_dir($appPath)) {
             $this->app->setRuntimePath($this->app->getRuntimePath() . $appName . DIRECTORY_SEPARATOR);
