@@ -52,7 +52,8 @@ class Url extends UrlBuild
             $path       = explode('/', $url);
             $action     = array_pop($path);
             $controller = empty($path) ? $controller : array_pop($path);
-            $app        = empty($path) ? $this->getAppName() : array_pop($path);
+            $app        =  $this->getAppName(empty($path) ? $this->app->http->getName() : array_pop($path));
+
             $url        = $controller . '/' . $action;
             $bind       = $this->app->config->get('app.domain_bind', []);
 
@@ -217,12 +218,12 @@ class Url extends UrlBuild
 
     /**
      * 获取URL的应用名
+     * @param $app
      * @access protected
      * @return string
      */
-    protected function getAppName()
+    protected function getAppName($app)
     {
-        $app = $this->app->http->getName();
         $map = $this->app->config->get('app.app_map', []);
 
         if ($key = array_search($app, $map)) {
