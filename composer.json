@@ -1,5 +1,5 @@
 {
-    "name": "topthink/think-multi-app",
+    "name": "wsteel/think-multi-app",
     "description": "thinkphp6 multi app support",
     "license": "Apache-2.0",
     "authors": [
@@ -23,6 +23,6 @@
                 "think\\app\\Service"
             ]
         }
-    },    
+    },
     "minimum-stability": "dev"
 }
