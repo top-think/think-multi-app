@@ -171,12 +171,15 @@ class Url extends UrlBuild
         $depr = $this->route->config('pathinfo_depr');
         $url  = str_replace('/', $depr, $url);
 
-        $file = $request->baseFile();
-        if ($file && 0 !== strpos($request->url(), $file)) {
-            $file = str_replace('\\', '/', dirname($file));
-        }
+        // 如不指定入口文件 即为当前入口文件
+        if(empty($this->root)){
+            $file = $request->baseFile();
+            if ($file && 0 !== strpos($request->url(), $file)) {
+                $file = str_replace('\\', '/', dirname($file));
+            }
 
-        $url = rtrim($file, '/') . '/' . ltrim($url, '/');
+            $url = rtrim($file, '/') . '/' . ltrim($url, '/');
+        }
 
         // URL后缀
         if ('/' == substr($url, -1) || '' == $url) {
