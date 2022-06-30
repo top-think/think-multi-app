@@ -48,8 +48,6 @@ class MultiApp
     public function __construct(App $app)
     {
         $this->app  = $app;
-        $this->name = $this->app->http->getName();
-        $this->path = $this->app->http->getPath();
     }
 
     /**
@@ -61,6 +59,9 @@ class MultiApp
      */
     public function handle($request, Closure $next)
     {
+        $this->name = $this->app->http->getName();
+        $this->path = $this->app->http->getPath();
+        
         if (!$this->parseMultiApp()) {
             return $next($request);
         }
