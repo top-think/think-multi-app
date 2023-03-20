@@ -132,6 +132,7 @@ class MultiApp
                 if (isset($map[$name])) {
                     if ($map[$name] instanceof Closure) {
                         $result  = call_user_func_array($map[$name], [$this->app]);
+                        $this->path = $this->app->http->getPath();
                         $appName = $result ?: $name;
                     } else {
                         $appName = $map[$name];
