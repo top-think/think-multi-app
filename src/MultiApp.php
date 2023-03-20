@@ -208,6 +208,15 @@ class MultiApp
     }
 
     /**
+     * 设置应用目录
+     * @param string $appPath
+     */
+    public function setAppPath(string $appPath): void
+    {
+        $this->path =   $appPath;
+    }
+
+    /**
      * 加载应用文件
      * @param string $appName 应用名
      * @return void
