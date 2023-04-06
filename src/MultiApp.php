@@ -41,6 +41,9 @@ class MultiApp
      */
     public function handle($request, Closure $next)
     {
+        $this->name = $this->app->http->getName();
+        $this->path = $this->app->http->getPath();
+        
         if (!$this->parseMultiApp()) {
             return $next($request);
         }
