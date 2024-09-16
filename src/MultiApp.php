@@ -103,7 +103,8 @@ class MultiApp
                 $path = $this->app->request->pathinfo();
                 $map  = $this->app->config->get('app.app_map', []);
                 $deny = $this->app->config->get('app.deny_app_list', []);
-                $name = current(explode('/', $path));
+                $pathinfo_depr= $this->app->config->get('route.pathinfo_depr', '/'); //pathinfo 从配置文件中取值
+                $name = current(explode($pathinfo_depr, $path));
 
                 if (strpos($name, '.')) {
                     $name = strstr($name, '.', true);
