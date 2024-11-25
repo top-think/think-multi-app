@@ -146,7 +146,7 @@ class Url extends UrlBuild
             throw new \InvalidArgumentException('route name not exists:' . $name);
         } else {
             // 检测URL绑定
-            $bind = (string)$this->route->getDomainBind($domain && is_string($domain) ? $domain : null);
+            $bind = (string) $this->route->getDomainBind($domain && is_string($domain) ? $domain : null);
 
             if ($bind && 0 === strpos($url, $bind)) {
                 $url = substr($url, strlen($bind) + 1);
